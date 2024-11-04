@@ -1,8 +1,7 @@
 # Credit_Score_Project
 
    # Requirements 
-   1) Data Loading: program will read data from csv files that has 28 columns and 80,000 rows. The data can be unordered and it could contain repeated,   
-      missing, incorrect and or misleading values.
+   1) Data Loading: program will read data from csv files that has 28 columns and 80,000 rows. The data can be unordered and it could contain repeated, missing, incorrect and or misleading       values.
    
    2) Data Cleaning and Preprocessing:
         Cleaning tasks:
@@ -17,4 +16,4 @@
    
    4) Grading Models will be graded among each other, this is based in how the perform against a reserved testing data set.
    
-   5) Interface: A textual menu should be implemented in a way that the user could load several samples of the same data set (all data cleaning steps would be the same). During the demo you    will be ask to load several data sets with the same structure.
+   5) Interface: A textual menu should be implemented in a way that the user could load several samples of the same data set (all data cleaning steps would be the same). During the demo          you will be ask to load several data sets with the same structure.
