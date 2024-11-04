@@ -1,11 +1,8 @@
 # Credit_Score_Project
 
    # Project Description
-      You are employed by a multinational financial firm as a data scientist. The business has accumulated a lot of credit-related data and basic bank information over the course of a year. To cut down on manual labor, the management plans to create an intelligent system that divides people into credit score brackets. Create a neural network model that can categorize a person's credit score based on their credit-related data.
-
-In this project you will be required to build 1 script that will perform basic data cleaning and to construct the best possible Neural Network to classify people in different brackets of Credit Scores.
-
-For this project you are required to methods in Python using Notebooks, in groups of 4 students that will be randomly assigned.
+   You are employed by a multinational financial firm as a data scientist. The business has accumulated a lot of credit-related data and basic bank information over the course of a 
+   year. To cut down on manual labor, the management plans to create an intelligent system that divides people into credit score brackets. Create a neural network model that can categorize    a person's credit score based on their credit-related data.
 
    # Requirements 
    1) Data Loading: program will read data from csv files that has 28 columns and 80,000 rows. The data can be unordered and it could contain repeated, missing, incorrect and or misleading       values.
