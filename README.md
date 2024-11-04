@@ -9,11 +9,11 @@
    
    2) Data Cleaning and Preprocessing:
         Cleaning tasks:
-          Dropping unnecessary columns and correcting data types.
-          Eliminate any row with any empty values in your target columns.
-          Eliminate duplicated columns if necessary.
-          Drop outliers if present.
-          Transform any columns using encoding is necessary.
+          - Dropping unnecessary columns and correcting data types.
+          - Eliminate any row with any empty values in your target columns.
+          - Eliminate duplicated columns if necessary.
+          - Drop outliers if present.
+          - Transform any columns using encoding is necessary.
    
    3) Model Implementation: The team should construct a Neural Network model, then test it, and finally tune-up the model so you select the model that generates
       the best predictions (target the model with the smallest Root Mean Square Error or RMSE).
@@ -24,22 +24,25 @@
 
    # Project Breakdown
    1) Report 
-      A title page.
-      An introduction.
-      One Section explaining how your group approached the project.
-      One Section explaining how the data loading, data cleaning,was implemented.
-      One Section explaining the structure of your code, how Error Handling was implemented, and how variables naming and comments were managed in your code to improve its readability
-      One Section on the structure of the Neural network you used and the hyper-parameter your group used.
-      One Section on the testing of your model including your best RMSE.
-      Conclusions.
+         - A title page.
+         - An introduction.
+         - One Section explaining how your group approached the project.
+         - One Section explaining how the data loading, data cleaning,was implemented.
+         - One Section explaining the structure of your code, how Error Handling was implemented, and how variables naming and comments were managed in your code to improve its readability
+         - One Section on the structure of the Neural network you used and the hyper-parameter your group used.
+         - One Section on the testing of your model including your best RMSE.
+         - Conclusions.
 
    2) Presentation
-       Max of 12 Slides
-       A title page including the student(s) submitting the work.
-       A minimum of 1 slide (1 per section of your report) including an overview and screenshot(s) of your Implementation
-       A conclusions slide
+         - Max of 12 Slides
+         - A title page including the student(s) submitting the work.
+         - A minimum of 1 slide (1 per section of your report) including an overview and screenshot(s) of your Implementation
+         - A conclusions slide
 
    3) Source Code
 
    # TODO
-      
+   - Serafin: 
+   - Darren: 
+   - Daniel:
+   - Raul:
