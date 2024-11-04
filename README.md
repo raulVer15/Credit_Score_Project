@@ -8,12 +8,12 @@
    1) Data Loading: program will read data from csv files that has 28 columns and 80,000 rows. The data can be unordered and it could contain repeated, missing, incorrect and or misleading       values.
    
    2) Data Cleaning and Preprocessing:
-        Cleaning tasks:
-          - Dropping unnecessary columns and correcting data types.
-          - Eliminate any row with any empty values in your target columns.
-          - Eliminate duplicated columns if necessary.
-          - Drop outliers if present.
-          - Transform any columns using encoding is necessary.
+      Cleaning tasks:
+         - Dropping unnecessary columns and correcting data types.
+         - Eliminate any row with any empty values in your target columns.
+         - Eliminate duplicated columns if necessary.
+         - Drop outliers if present.
+         - Transform any columns using encoding is necessary.
    
    3) Model Implementation: The team should construct a Neural Network model, then test it, and finally tune-up the model so you select the model that generates
       the best predictions (target the model with the smallest Root Mean Square Error or RMSE).
