@@ -8,7 +8,6 @@
    1) Data Loading: program will read data from csv files that has 28 columns and 80,000 rows. The data can be unordered and it could contain repeated, missing, incorrect and or misleading       values.
    
    2) Data Cleaning and Preprocessing:
-      Cleaning tasks:
          - Dropping unnecessary columns and correcting data types.
          - Eliminate any row with any empty values in your target columns.
          - Eliminate duplicated columns if necessary.
