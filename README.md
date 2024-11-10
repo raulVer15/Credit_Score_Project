@@ -45,3 +45,6 @@
    - Darren: 
    - Daniel:
    - Raul:
+
+COLUMNS NOT NEEDED:
+CUSTOMER_ID, MONTH, NAME, OCCUPATION, Type of Loans, Monthly Balance
