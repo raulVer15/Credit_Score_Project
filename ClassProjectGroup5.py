@@ -8,6 +8,8 @@
 # Student 4: Raul Verduzco
 # description: Implementation Basic Data Analysis Routines
 
+import os
+import numpy as pd
 import pandas as pd
 
 
@@ -17,8 +19,10 @@ def read_CSV():
     return df
 
 def clean_df(df):
-    
+
+    # drop columns 
     df.drop(columns = 'Unnamed: 0', inplace = True)             # drop Unnamed column
+    df.drop(columns = 'Name', inplace = True)
     
     df.drop_duplicates()                                        # drops duplicates 
                                                                 # drops if ID repeats
