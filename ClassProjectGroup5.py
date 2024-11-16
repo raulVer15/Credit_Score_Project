@@ -42,6 +42,6 @@ def main():
     
     df = read_CSV()
     cleanedDf = clean_df(df)
-    print(cleanedDf)
+    print(cleanedDf.info())
 
 main()
