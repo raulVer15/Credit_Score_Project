@@ -20,16 +20,22 @@ def read_CSV():
 
 def clean_df(df):
 
-    # drop columns 
+    # Step 1 - Dropping unnecessary columns
     df.drop(columns = 'Unnamed: 0', inplace = True)             # drop Unnamed column
-    df.drop(columns = 'Name', inplace = True)
+    df.drop(columns = 'Name', inplace = True)                    # name col dropped
+
+    # Step 2- correcting data types
+    df['Age']= df['Age'].str.replace('_','')
+    df['Age'] = df['Age'].astype(int)
+
+
+
     
-    df.drop_duplicates()                                        # drops duplicates 
-                                                                # drops if ID repeats
-    df.drop_duplicates(subset=["ID"], keep="first", inplace=True)
+    #df.drop_duplicates()                                        # drops duplicate    
+    #df.drop_duplicates(subset=["ID"], keep="first", inplace=True)
     
     # drop repeating inputs of same user in the same month using CID
-    df.drop_duplicates(subset=["Customer_ID", "Month"],keep="first", inplace=True)
+    #df.drop_duplicates(subset=["Customer_ID", "Month"],keep="first", inplace=True)
     return df
 
 def main():
