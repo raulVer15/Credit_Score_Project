@@ -599,6 +599,13 @@ def main():
                 print(" Please enter a number options, try again")
         
         except Exception as e:
-            print_time("An error occurred: {}", str(e))
+            if int(option) == 2:
+                print_time("An error occurred: Please load data before cleaning ")
+            elif int(option) == 3:
+                print_time("An error occurred: Please load and process data before training")
+            elif int(option) == 4:
+                print_time("An error occurred: Please load and train data before prediction ")
+            else:
+                print_time("An error occurred: {}", str(e))
             
 main()
