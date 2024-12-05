@@ -529,7 +529,7 @@ def main():
         option = input(" \n Please select option: ")
         try:
             if verfiy_option(option):
-                if (int(option) ==1):
+                if (int(option) in options.values() and int(option) == 1):
                     print("\n")
                     print_time("Loading and cleaning input data set:")
                     print("************************************************")
@@ -548,7 +548,7 @@ def main():
 
                     update_menu(options, option)
 
-                elif(int(option) == 2):
+                elif (int(option) in options.values() and int(option) == 2):
                     print("\n")
                     print_time("  Process (Clean) data:")
                     print("************************************************")
@@ -562,7 +562,7 @@ def main():
                     print_time("Time to clean is: {} seconds", cleaning_duration)
                     update_menu(options, option)
 
-                elif(int(option) == 3):
+                elif (int(option) in options.values() and int(option) == 3):
                     print("\n")
                     print_time("Train Neural Network")
                     print("************************************************")
@@ -574,7 +574,7 @@ def main():
                     print_time("Time to train is: {} seconds", NN_duration)
                     update_menu(options, option)
 
-                elif(int(option) == 4):
+                elif (int(option) in options.values() and int(option) == 4):
                     print("\n")
                     print_time("Generate Prediction")
                     print("************************************************")
@@ -586,7 +586,7 @@ def main():
                     print_time(f"Size of testing set")
                     update_menu(options, option)
 
-                elif(int(option) == 5):
+                elif (int(option) in options.values() and int(option) == 5):
                     print("\n")
                     print_time("Goodbye ...")
                     print("\n")
