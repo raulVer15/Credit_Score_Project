@@ -414,7 +414,8 @@ def train_NN(df):
 
         print("Training model")
         # Train the model
-        model.fit(X_train, y_train, #verbose=0,
+        # adding verbose=0 will hide the epochs when fitting 
+        model.fit(X_train, y_train,
                 validation_split=0.2,
                 epochs=40,
                 batch_size=128,
