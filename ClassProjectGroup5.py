@@ -417,7 +417,7 @@ def train_NN(df):
         # adding verbose=0 will hide the epochs when fitting 
         model.fit(X_train, y_train,
                 validation_split=0.2,
-                epochs=40,
+                epochs=80,
                 batch_size=128,
                 callbacks=[early_stopping, lr_scheduler])
 
