@@ -23,7 +23,7 @@ import warnings
 # NN
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix, accuracy_score
+from sklearn.metrics import precision_score, recall_score, f1_score, confusion_matrix, accuracy_score, mean_squared_error
 from tensorflow.keras.models import Sequential # type: ignore
 from tensorflow.keras.layers import Dense, Dropout, BatchNormalization # type: ignore
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau # type: ignore
@@ -188,8 +188,14 @@ def clean_data(df):
         summary_num_delayed_payments = summarize_numerical_column_with_deviation(df, 'Num_of_Delayed_Payment', median_standardization_summary = True)
         df['Num_of_Delayed_Payment'][(df['Num_of_Delayed_Payment'] > summary_num_delayed_payments['Num_of_Delayed_Payment']['Outlier upper range']) | (df['Num_of_Delayed_Payment'] < 0)] = np.nan
         df.groupby('Customer_ID')['Num_of_Delayed_Payment'].transform(pd.Series.diff).value_counts(normalize = True)
-        temp = df.groupby('Customer_ID')['Num_of_Delayed_Payment'].transform(lambda x: (x == x.mode()[0]).sum()/x.notnull().sum()).value_counts(normalize = True)
-        temp[temp.index > 0.5].sum() # Idenitfying how many times the mode occurs in more than 50% of non-null data per customer
+        try:
+            temp = df.groupby('Customer_ID')['Num_of_Delayed_Payment'].transform(
+                lambda x: (x == x.mode()[0]).sum() / x.notnull().sum() if x.notnull().sum() > 0 else 0
+            ).value_counts(normalize=True)
+            temp[temp.index > 0.5].sum() 
+        except ZeroDivisionError as e:
+            print(f"Error: {str(e)}. Division by zero encountered in mode calculation.")
+            raise
         df.groupby('Customer_ID')['Num_of_Delayed_Payment'].agg(lambda x: len(x.mode())).value_counts()
         df['Num_of_Delayed_Payment'] = df.groupby('Customer_ID')['Num_of_Delayed_Payment'].transform(return_mode_median_filled_int).astype(int)
         
@@ -236,13 +242,13 @@ def clean_data(df):
         df['Month'] = df['Month'].map({'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6, 'July': 7, 'August': 8})
 
         # Sorting and copying dataframe
-        df.sort_values(by = ['Customer_ID', 'Month'], ignore_index = True, inplace = True)
-        df.drop(columns = 'ID', inplace = True)
+        #df.sort_values(by = ['Customer_ID', 'Month'], ignore_index = True, inplace = True)
+        #df.drop(columns = 'ID', inplace = True)
         df_copy = df.copy()
 
         # Handling outliers and missing values in Age column
         df['Age'][(df['Age'] > 100) | (df['Age'] <= 0)] = np.nan 
-        summary_age = summarize_numerical_column_with_deviation(df, 'Age', median_standardization_summary = True)
+        #summary_age = summarize_numerical_column_with_deviation(df, 'Age', median_standardization_summary = True)
         df['Age'][df.groupby('Customer_ID')['Age'].transform(median_standardization, default_value = return_max_MAD(df, 'Age')) > 80] = np.nan
         df['Age'] =  df.groupby('Customer_ID')['Age'].transform(forward_backward_fill).astype(int)
 
@@ -251,8 +257,8 @@ def clean_data(df):
         df['Occupation'].isnull().sum()
 
         # Handling Annual Income and Monthly Inhand Salary columns
-        summary_annual_income = summarize_numerical_column_with_deviation(df, 'Annual_Income', 'Customer_ID', True, False)
-        summary_monthly_inhand_salary = summarize_numerical_column_with_deviation(df, 'Monthly_Inhand_Salary', 'Customer_ID', True, True)
+        #summary_annual_income = summarize_numerical_column_with_deviation(df, 'Annual_Income', 'Customer_ID', True, False)
+        #summary_monthly_inhand_salary = summarize_numerical_column_with_deviation(df, 'Monthly_Inhand_Salary', 'Customer_ID', True, True)
         df['Annual_Income'][df['Monthly_Inhand_Salary'].notnull()] = df[df['Monthly_Inhand_Salary'].notnull()].groupby(['Customer_ID', 'Monthly_Inhand_Salary'], group_keys = False)['Annual_Income'].transform(return_mode)
         df['Monthly_Inhand_Salary'] = df.groupby(['Customer_ID', 'Annual_Income'], group_keys = False)['Monthly_Inhand_Salary'].transform(forward_backward_fill)
         df['Monthly_Inhand_Salary'].isnull().sum()
@@ -261,18 +267,18 @@ def clean_data(df):
         df['Monthly_Inhand_Salary'] = df.groupby('Customer_ID')['Monthly_Inhand_Salary'].transform(forward_backward_fill)
 
         # Handling Number of Bank Accounts column
-        summary_num_bank_accounts = summarize_numerical_column_with_deviation(df, 'Num_Bank_Accounts', median_standardization_summary = True)
+        #summary_num_bank_accounts = summarize_numerical_column_with_deviation(df, 'Num_Bank_Accounts', median_standardization_summary = True)
         df['Num_Bank_Accounts'][df['Num_Bank_Accounts'] < 0] = np.nan
         df['Num_Bank_Accounts'][df.groupby('Customer_ID')['Num_Bank_Accounts'].transform(median_standardization, default_value = return_max_MAD(df, 'Num_Bank_Accounts')).abs() > 2] = np.nan
         df['Num_Bank_Accounts'] = df.groupby('Customer_ID')['Num_Bank_Accounts'].transform(forward_backward_fill).astype(int)
 
         # Handling Number of Credit Cards column
-        summary_num_credit_cards = summarize_numerical_column_with_deviation(df, 'Num_Credit_Card', median_standardization_summary = True)
+        #summary_num_credit_cards = summarize_numerical_column_with_deviation(df, 'Num_Credit_Card', median_standardization_summary = True)
         df['Num_Credit_Card'][df.groupby('Customer_ID')['Num_Credit_Card'].transform(median_standardization, default_value = return_max_MAD(df, 'Num_Credit_Card')).abs() > 2] = np.nan
         df['Num_Credit_Card'] = df.groupby('Customer_ID')['Num_Credit_Card'].transform(forward_backward_fill).astype(int)
 
         # Handling Interest Rate column
-        summary_interest_rate = summarize_numerical_column_with_deviation(df, 'Interest_Rate', median_standardization_summary = True)
+        #summary_interest_rate = summarize_numerical_column_with_deviation(df, 'Interest_Rate', median_standardization_summary = True)
         df['Interest_Rate'] = df.groupby('Customer_ID')['Interest_Rate'].transform(lambda x: x.median())
 
         # Handling Number of Loans column
@@ -374,9 +380,9 @@ def train_NN(df):
         total_columns = num_continuous_features + num_encoded_columns
         
         # Load data
+        
         scaler = StandardScaler()
         scaled_continuous = scaler.fit_transform(df[continuous_features])
-        
         
         encoded_target = encoder.fit_transform(df[target])
         encoded_target_df = pd.DataFrame(encoded_target.toarray(), columns=encoder.get_feature_names_out(target))
@@ -439,7 +445,8 @@ def train_NN(df):
         recall = recall_score(y_test_classes, y_pred_classes, average='weighted')
         f1 = f1_score(y_test_classes, y_pred_classes, average='weighted')
         conf_matrix = confusion_matrix(y_test_classes, y_pred_classes)
-
+        
+        rmse = np.sqrt(mean_squared_error(y_test_classes, y_pred_classes))
         # Get current timestamp
         #current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -450,6 +457,7 @@ def train_NN(df):
         print_time(f"Model Precision: {precision:.2f}")
         print_time(f"Model Recall: {recall:.2f}")
         print_time(f"Model f1_score: {f1:.2f}")
+        print_time(f"Model RMSE: {rmse:.2f}")
         print_time(f"Model Confusion Matrix: \n")
         # Print confusion matrix using tabulate
         headers = ["Good", "Poor", "Standard"]
@@ -474,8 +482,9 @@ def train_NN(df):
     # finally:
     #     # Optional: Cleanup code or final statement
     #     print("Model training and evaluation process completed.")
-def predictions(x_test, y_test, encoder, model):
+def predictions(x_test, y_test, encoder, model, df):
     # Make Predictions
+    print(df.columns)
     predictions = model.predict(x_test)
     # getting y_test values
     y_tested = encoder.inverse_transform(y_test)
@@ -489,8 +498,19 @@ def predictions(x_test, y_test, encoder, model):
 
     headers = ["True Value", "Predicted Value"]
     print(tabulate(data, headers=headers, tablefmt="grid"))
-
     print("\n")
+    
+    y_predicted = encoder.inverse_transform(predictions).ravel()
+    ids = df["ID"][:len(y_test)].values
+    
+    results_df = pd.DataFrame({
+        "Customer_ID": ids,  # Map Customer_IDs to test data
+        "Credit_Score": y_predicted
+    })
+    
+    
+    results_df.to_csv("output/predictionClassProject1.csv", index=False)
+    print("Predictions saved to 'predictionClassProject1.csv'")
 
 def print_time(format_string, *args, **kwargs):
     """Formatted print function with timestamps."""
@@ -586,7 +606,7 @@ def main():
                     print("\n")
                     print_time("Generate Prediction")
                     print("************************************************")
-                    predictions(x_test, y_test, encoder, model)
+                    predictions(x_test, y_test, encoder, model, df)
                     print_time(f"Generating prediction using selected Neural Network")
                     print_time(f"Size of training set")
                     print_time(f"Size of testing set")
@@ -611,8 +631,8 @@ def main():
                 print_time("An error occurred: Please load data before cleaning ")
             elif int(option) == 3:
                 print_time("An error occurred: Please load and process data before training")
-            elif int(option) == 4:
-                print_time("An error occurred: Please load and train data before prediction ")
+            #elif int(option) == 4:
+                #print_time("An error occurred: Please load and train data before prediction ")
             else:
                 print_time("An error occurred: {}", str(e))
             
