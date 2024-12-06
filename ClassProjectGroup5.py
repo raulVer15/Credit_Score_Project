@@ -357,6 +357,11 @@ def train_NN(df):
         missing_columns = [col for col in continuous_features + categorical_features + target if col not in df.columns]
         if missing_columns:
             raise ValueError(f"The following columns are missing in the dataset: {missing_columns}") 
+        row_counts = df.apply(lambda col: col.notnull().sum(), axis=0)
+        if len(set(row_counts)) != 1:  # If all columns don't have the same row count
+            raise ValueError(
+                f"Unequal number of rows detected in the columns. Row counts: {row_counts.to_dict()}."
+            )    
         
         encoder = OneHotEncoder(handle_unknown="ignore")
         
@@ -458,10 +463,13 @@ def train_NN(df):
         #plt.show()
         # Return metrics in an array
         return [X_test, y_test, encoder, model]
-
+    
+    except ValueError as e:
+        print_time(f"Validation error: {e}")
+        return None
+    
     except Exception:
-         # Handle any errors that occur
-         return f"An error occurred: Load data before training"
+        return f"An error occurred: Load data before training"
 
     # finally:
     #     # Optional: Cleanup code or final statement
