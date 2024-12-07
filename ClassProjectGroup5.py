@@ -39,7 +39,7 @@ warnings.filterwarnings('ignore')
 def load_data():
     try:
         # finds all csv
-        file = glob.glob('**/credit_score_data*.csv',
+        file = glob.glob('**/credit_score_demo0*.csv',
                         recursive= True,
                         include_hidden=True)
         df = pd.read_csv(file[0])
@@ -219,7 +219,7 @@ def clean_data(df):
         temp_series[~temp_series.str.fullmatch('([0-9]*[.])?[0-9]+')].unique()
         df['Amount_invested_monthly'] = df['Amount_invested_monthly'].str.replace('_', '').astype(float)
         df['Amount_invested_monthly'][df['Amount_invested_monthly'] > 8000] = np.nan
-        summary_amount_invested_monthly = summarize_numerical_column_with_deviation(df, 'Amount_invested_monthly', median_standardization_summary = True)
+        #summary_amount_invested_monthly = summarize_numerical_column_with_deviation(df, 'Amount_invested_monthly', median_standardization_summary = True)
         df.groupby('Customer_ID')['Amount_invested_monthly'].transform(return_num_of_modes).value_counts()
         df['Amount_invested_monthly'] = df.groupby('Customer_ID')['Amount_invested_monthly'].transform(lambda x: x.fillna(x.median()))
         
@@ -504,12 +504,18 @@ def predictions(x_test, y_test, encoder, model, df):
     ids = df["ID"][:len(y_test)].values
     
     results_df = pd.DataFrame({
-        "Customer_ID": ids,  # Map Customer_IDs to test data
+        "ID": ids,  # Map Customer_IDs to test data
         "Credit_Score": y_predicted
     })
     
+    output_dir = "output"
+    output_path = os.path.join(output_dir, "predictionClassProject1.csv")
     
-    results_df.to_csv("output/predictionClassProject1.csv", index=False)
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    
+    results_df.to_csv(output_path, index=False)
     print("Predictions saved to 'predictionClassProject1.csv'")
 
 def print_time(format_string, *args, **kwargs):
@@ -609,9 +615,9 @@ def main():
                     predictions(x_test, y_test, encoder, model, df)
                     print_time(f"Generating prediction using selected Neural Network")
                     print_time(f"Size of training set")
-                    print_time(f"Size of testing set")
+                    print_time(f"Size of testing set {len(x_test)}")
                     print_time(f"Predictions generated (predictions.csv have been generated)....")
-                    print_time(f"Size of testing set")
+                    print_time(f"Size of testing set {len(x_test)}")
                     update_menu(options, option)
 
                 elif (int(option) in options.values() and int(option) == 5):
@@ -631,8 +637,8 @@ def main():
                 print_time("An error occurred: Please load data before cleaning ")
             elif int(option) == 3:
                 print_time("An error occurred: Please load and process data before training")
-            #elif int(option) == 4:
-                #print_time("An error occurred: Please load and train data before prediction ")
+            elif int(option) == 4:
+                print_time("An error occurred: Please load and train data before prediction ")
             else:
                 print_time("An error occurred: {}", str(e))
             
